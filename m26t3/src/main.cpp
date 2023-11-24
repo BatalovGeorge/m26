@@ -51,6 +51,7 @@ int main()
 
         else if(input_cmd=="close")
         {
+            delete u_window;
             exit(0);
         }
 
