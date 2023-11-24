@@ -14,11 +14,9 @@ bool Main_Window::is_digits(std::string& str)
     return true;
 }
 
-void Main_Window::invoke_newParams(void (*set_newParams)(unsigned, unsigned), std::string &msg_output)
-{
-//msg_output = "input height and width of the window: (20 20)";                set_newParams()
-//msg_output = "input height and width up left corner pos to move window: (20 20)"; set_newCoord()
 
+std::stringstream Main_Window::input_data(Main_Window *main_win, std::string &msg_output)
+{
     std::string input_coordinates;
     unsigned coord_h, coord_w;
     std::cout<<msg_output;
@@ -26,21 +24,56 @@ void Main_Window::invoke_newParams(void (*set_newParams)(unsigned, unsigned), st
     if(is_digits(input_coordinates))
     {
         std::stringstream ss(input_coordinates);
-        ss>>coord_h>>coord_w;
-        set_newParams(coord_h,coord_w);
+        return ss;
     }else{std::cout<<"unexpected input:"<<input_coordinates<<std::endl;}
+}
+
+bool Main_Window::check_outOfBounds(User_Window& window)
+{
+    if(window.upL_pos().at(1)+window.scale().at(1) >window_width
+            || window.upL_pos().at(0)+window.scale().at(0) >window_height
+            || window.upL_pos().at(0) > window_height
+            || window.upL_pos().at(1) > window_width
+            || window_height - window.upL_pos().at(0)< window.scale().at(0)
+            || window_width - window.upL_pos().at(1)< window.scale().at(1))
+    {
+      std::cout<<"out of bounds\n";return false;
+    }else
+    { std::cout<<"in bounds\n"; return true;}
 }
 
 void Main_Window::display(User_Window& window)
 {
-    int buff;
-    for(int column=0;column<window_width;column++)
+    if(check_outOfBounds(window))
     {
-        for(int line=0;line<window_height;line++)
+        int pos_h=window.upL_pos().at(0);
+        int pos_w=window.upL_pos().at(1);
+
+        for(int column=1;column<=window_height;column++)
         {
-                   std::cout<<"0";
-                   if(line==window.upL_pos().at)
-                   if(line==window_height-1){std::cout<<std::endl;}
+            for(int line=1;line<=window_height;line++)
+            {
+                if(column==pos_h && line==pos_w
+                        &&window.upL_pos().at(1)+window.scale().at(1)!=pos_w
+                        &&window.upL_pos().at(0)+window.scale().at(0)!=pos_h)
+                {
+                        std::cout<<"1";
+                        pos_w++;
+
+                }else{std::cout<<"0";}
+
+                if(line==window_height){
+                    std::cout<<std::endl;
+                }
+
+                if(window.upL_pos().at(1)+window.scale().at(1)==pos_w)
+                {
+                    pos_h++;
+                    pos_w=window.upL_pos().at(1);
+                }
+            }
         }
     }
+
+
 }

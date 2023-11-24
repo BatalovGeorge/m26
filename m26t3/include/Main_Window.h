@@ -14,6 +14,7 @@ public:
     User_Window usr;
     bool is_digits(std::string& str);
     void display(User_Window& window);
-    void invoke_newParams( void (*func)(unsigned,unsigned),std::string &msg_output);
+    std::stringstream input_data(Main_Window *main_win, std::string &msg_output);
+    bool check_outOfBounds(User_Window& window);
 };
 #endif // MAIN_WINDOW_H

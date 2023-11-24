@@ -20,41 +20,42 @@
 
 #include "Main_Window.h"
 
+
 int main()
 {
-    unsigned  h=2;
-    unsigned  w=2;
     Main_Window* u_window= new Main_Window;
-    u_window->usr.set_newParams(h,w);
-    u_window->usr.set_newCoordinate(h,w);
-    u_window->display(u_window->usr);
-//    while(true)
-//    {
-//        std::string input_cmd;
-//        std::cout<<"input cmd (move,resize,display,close): ";
-//        std::cin>>input_cmd;
-//        std::cin.sync();
+    while(true)
+    {
+        std::string input_cmd;
+        std::cout<<"input cmd (move,resize,display,close): ";
+        std::cin>>input_cmd;
+        std::cin.sync();
+        unsigned int coord_h,coord_w;
+        if(input_cmd=="move")
+        {
 
-//        if(input_cmd=="move")
-//        {
+            std::string msg_output = "input height and width up left corner pos to move window: (20 20)";
+            u_window->input_data(u_window,msg_output)>>coord_h>>coord_w;
+            u_window->usr.set_newCoordinate(coord_h,coord_w);
+        }
+        else if(input_cmd=="resize")
+        {
+            std::string msg_output = "input height and width of the window: (20 20)";
+            u_window->input_data(u_window,msg_output)>>coord_h>>coord_w;
+            u_window->usr.set_newParams(coord_h,coord_w);
+        }
+        else if(input_cmd=="display")
+        {
+            u_window->display(u_window->usr);
+        }
 
-//        }
-//        else if(input_cmd=="resize")
-//        {
+        else if(input_cmd=="close")
+        {
+            exit(0);
+        }
 
-//        }
-//        else if(input_cmd=="display")
-//        {
-
-//        }
-
-//        else if(input_cmd=="close")
-//        {
-//            exit(0);
-//        }
-
-//        else{std::cout<<"unexpected input:\n";}
-//    }
+        else{std::cout<<"unexpected input:\n";}
+    }
 
     return 0;
 }
